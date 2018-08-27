@@ -21,6 +21,10 @@ public class DusDependencyResolver {
     private int packagedDbVersion;
     private DusLogger mDusLogger;
 
+    @NonNull
+    public static DusDependencyResolver getDUSDependencyResolver(@NonNull Context context) {
+        return ((DusApplication) (context.getApplicationContext())).getDusDependencyResolver();
+    }
 
     ComponentRequestInterface getComponentRequestInterface() {
         return mComponentRequestInterface;
@@ -71,11 +75,6 @@ public class DusDependencyResolver {
     public DusDependencyResolver setDusLogger(@NonNull DusLogger dusLogger) {
         mDusLogger = dusLogger;
         return this;
-    }
-
-    @NonNull
-    public static DusDependencyResolver getDUSDependencyResolver(@NonNull Context context) {
-        return ((DusApplication) (context.getApplicationContext())).getDusDependencyResolver();
     }
 
 }

@@ -5,5 +5,6 @@ package com.flipkart.dus.dependencies;
  */
 public interface DusLogger {
     void log(String log);
+
     void logException(Throwable throwable);
 }

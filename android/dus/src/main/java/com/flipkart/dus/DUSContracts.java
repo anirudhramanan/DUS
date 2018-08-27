@@ -21,21 +21,8 @@ public class DUSContracts {
     public static final int LOADING = 1;
     @NonNull
     public static final int ERROR = 2;
-
-
-    /* Uri exposed by DUS content provider */
-    @NonNull
-    static String CONTENT_AUTHORITY = "com.flipkart.dus.duscontentprovider";
-    @NonNull
-    private static Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     @NonNull
     public static final String PATH_JS_BUNDLE = "screen";
-    @NonNull
-    static final String PATH_JS_COMPONENTS = "components";
-    @NonNull
-    static final String PATH_UPDATEGRAPH = "updateGraph";
-    @NonNull
-    static final String PATH_CLEAR = "clear";
     @NonNull
     public static final String QUERY_SHOULD_RETRY = "shouldRetry";
     @NonNull
@@ -44,20 +31,27 @@ public class DUSContracts {
     public static final String TRUE = "true";
     @NonNull
     public static final String FALSE = "false";
-
     @NonNull
     public static final String COLUMN_STATUS = "status";
     @NonNull
     public static final String COLUMN_RESPONSE = "response";
-
     public static final int JS_BUNDLE = 0;
+    @NonNull
+    public static final String FILE_PATH = "filePath";
+    @NonNull
+    static final String PATH_JS_COMPONENTS = "components";
+    @NonNull
+    static final String PATH_UPDATEGRAPH = "updateGraph";
+    @NonNull
+    static final String PATH_CLEAR = "clear";
     static final int JS_COMPONENTS = JS_BUNDLE + 1;
     static final int UPDATE_GRAPH = JS_BUNDLE + 2;
     static final int CLEAR = JS_BUNDLE + 3;
-
+    /* Uri exposed by DUS content provider */
     @NonNull
-    public static final String FILE_PATH = "filePath";
-
+    static String CONTENT_AUTHORITY = "com.flipkart.dus.duscontentprovider";
+    @NonNull
+    private static Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static Uri buildFetchUpdateGraphUri() {
         return BASE_CONTENT_URI.buildUpon().appendPath(PATH_UPDATEGRAPH).build();

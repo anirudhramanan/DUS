@@ -8,5 +8,6 @@ import com.flipkart.dus.models.FileConfig;
  */
 public interface FileConfigResponseInterface {
     void onSuccess(FileConfig fileConfig, String configVersion);
+
     void onFailure(ErrorResponse errorResponse);
 }

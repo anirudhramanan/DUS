@@ -23,20 +23,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COMPONENT_KEY = "componentKey";
     @NonNull
     public static final String COMPONENT_VALUE = "componentValue";
+    //Table names
+    @NonNull
+    public static final String TABLE_COMPONENTS = "componentMeta";
     @NonNull
     private static final String SHARED_PREFERENCES_KEY = "ReactDatabaseHelper";
     @NonNull
     private static final String DATABASE_IMPORTED = "DatabaseImported";
     @NonNull
     private static final String DATABASE_NAME = "ReactNative";
-
     //Database Version
     private static final int DATABASE_VERSION = 1;
-
-    //Table names
-    @NonNull
-    public static final String TABLE_COMPONENTS = "componentMeta";
-
     @NonNull
     private final String mImportDatabaseName;
     @NonNull

@@ -3,8 +3,8 @@ package com.flipkart.dus.internals;
 
 import android.support.annotation.NonNull;
 
-import com.flipkart.dus.dependencies.ErrorResponse;
 import com.flipkart.dus.dependencies.ComponentRequestInterface;
+import com.flipkart.dus.dependencies.ErrorResponse;
 import com.flipkart.dus.dependencies.ResponseInterface;
 
 import java.util.ArrayList;
