@@ -11,8 +11,12 @@ import com.flipkart.dus.models.FileConfig$TypeAdapter;
 import com.flipkart.dus.utilities.FileHelper;
 import com.flipkart.dus.utilities.GsonHelper;
 import com.google.gson.TypeAdapter;
+import com.google.gson.internal.bind.TypeAdapters;
+import com.vimeo.stag.KnownTypeAdapters;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by surya.kanoria on 17/08/16.
@@ -29,6 +33,8 @@ public class FileConfigHelper {
     @NonNull
     private static final String UPDATE_GRAPH_VERSION = "updateGraphVersion";
     @NonNull
+    private static final String UPDATE_BUNDLE_VERSIONS = "bundleVersions";
+    @NonNull
     private static final String DATABASE_VERSION = "DatabaseVersion";
     @NonNull
     private static final String OPTIMIZE = "Optimize";
@@ -36,13 +42,12 @@ public class FileConfigHelper {
     private final FileHelper mFileHelper;
     private final SharedPreferences mSharedPreferences;
     private FileConfig mActiveConfig;
-
+    private KnownTypeAdapters.MapTypeAdapter<String, String, Map<String, String>> mapTypeAdapter;
 
     public FileConfigHelper(@NonNull FileHelper fileHelper, @NonNull Context context) {
         mFileHelper = fileHelper;
         mSharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
     }
-
 
     public void updateFileConfig(final FileConfig newFileConfig) {
         final FileConfig previousConfig = mActiveConfig;
@@ -89,9 +94,31 @@ public class FileConfigHelper {
         editor.apply();
     }
 
+    public void updateBundleVersions(@NonNull Map<String, String> bundleMetas) {
+        Map<String, String> bundleVersions = getBundleVersions();
+        bundleVersions.putAll(bundleMetas);
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(UPDATE_BUNDLE_VERSIONS, GsonHelper.toJson(getMapTypeAdapter(), bundleMetas));
+        editor.apply();
+    }
+
     @NonNull
     public String getFileConfigVersion() {
         return mSharedPreferences.getString(UPDATE_GRAPH_VERSION, "0");
+    }
+
+    @NonNull
+    public Map<String, String> getBundleVersions() {
+        String bundleVersions = mSharedPreferences.getString(UPDATE_BUNDLE_VERSIONS, null);
+        Map<String, String> result = new HashMap<>();
+        if (bundleVersions != null) {
+            try {
+                result = getMapTypeAdapter().fromJson(bundleVersions);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     public void clear() {
@@ -119,5 +146,13 @@ public class FileConfigHelper {
 
     public boolean shouldOptimize() {
         return mSharedPreferences.getBoolean(OPTIMIZE, false);
+    }
+
+    @NonNull
+    private TypeAdapter<Map<String, String>> getMapTypeAdapter() {
+        if (mapTypeAdapter == null) {
+            mapTypeAdapter = new KnownTypeAdapters.MapTypeAdapter<>(TypeAdapters.STRING, TypeAdapters.STRING, new KnownTypeAdapters.MapInstantiator<String, String>());
+        }
+        return mapTypeAdapter;
     }
 }

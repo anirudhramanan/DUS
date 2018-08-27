@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -76,7 +75,6 @@ public class ScreenMaker {
         return refreshGraph;
     }
 
-
     private void fetchComponents(@NonNull final String screenName, @NonNull final Context context, @NonNull final ArrayList<String> componentsKeys) {
         ArrayList<String> keysToDownload = new ArrayList<>(componentsKeys.size());
         keysToDownload.addAll(componentsKeys);
@@ -119,7 +117,6 @@ public class ScreenMaker {
             });
         }
     }
-
 
     private void downloadMissingComponents(List<String> keys, String screenType, ResponseInterface<Map<String, String>> callbackInterface) {
         DownloadJob downloadJob = new DownloadJob(callbackInterface);
