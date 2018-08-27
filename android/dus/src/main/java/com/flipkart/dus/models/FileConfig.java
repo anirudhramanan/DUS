@@ -12,47 +12,17 @@ import java.util.ArrayList;
 /**
  * Created by surya.kanoria on 09/06/16.
  */
-@SuppressWarnings("WeakerAccess")
 @UseStag
 public class FileConfig {
 
     @SerializedName("updateGraph")
-    public ArrayMap<String, ArrayList<String>> currentUpdateGraph;
-
+    private ArrayMap<String, BundleChunk> currentUpdateGraph;
     @SerializedName("currentUpdateGraphVersion")
-    public String currentUpdateGraphVersion;
-
+    private String currentUpdateGraphVersion;
     @SerializedName("wipeAll")
-    public boolean wipeAll;
-
+    private boolean wipeAll;
     @SerializedName("databaseVersion")
-    public int databaseVersion;
-
-    public int getDatabaseVersion() {
-        return databaseVersion;
-    }
-
-    public void setDatabaseVersion(int databaseVersion) {
-        this.databaseVersion = databaseVersion;
-    }
-
-    public ArrayMap<String, ArrayList<String>> getCurrentUpdateGraph() {
-        return currentUpdateGraph;
-    }
-
-    public void setCurrentUpdateGraph(ArrayMap<String, ArrayList<String>> currentUpdateGraph) {
-        this.currentUpdateGraph = currentUpdateGraph;
-    }
-
-
-    @Nullable
-    public ArrayMap<String, ArrayList<String>> getActiveUpdateGraph() {
-        return getCurrentUpdateGraph();
-    }
-
-    public String getActiveUpdateGraphVersion() {
-        return currentUpdateGraphVersion;
-    }
+    private int databaseVersion;
 
     public String getCurrentUpdateGraphVersion() {
         return currentUpdateGraphVersion;
@@ -60,6 +30,22 @@ public class FileConfig {
 
     public void setCurrentUpdateGraphVersion(String currentUpdateGraphVersion) {
         this.currentUpdateGraphVersion = currentUpdateGraphVersion;
+    }
+
+    public ArrayMap<String, BundleChunk> getCurrentUpdateGraph() {
+        return currentUpdateGraph;
+    }
+
+    public void setCurrentUpdateGraph(ArrayMap<String, BundleChunk> currentUpdateGraph) {
+        this.currentUpdateGraph = currentUpdateGraph;
+    }
+
+    public int getDatabaseVersion() {
+        return databaseVersion;
+    }
+
+    public void setDatabaseVersion(int databaseVersion) {
+        this.databaseVersion = databaseVersion;
     }
 
     public boolean isWipeAll() {
@@ -72,7 +58,8 @@ public class FileConfig {
 
     @Nullable
     public ArrayList<String> getComponents(@NonNull String screenType) {
-        ArrayMap<String, ArrayList<String>> componentsMap = getActiveUpdateGraph();
-        return null != componentsMap ? componentsMap.get(screenType) : null;
+        ArrayMap<String, BundleChunk> currentUpdateGraph = getCurrentUpdateGraph();
+        BundleChunk bundleChunk = null != currentUpdateGraph ? currentUpdateGraph.get(screenType) : null;
+        return null != bundleChunk ? bundleChunk.getFileChunks() : null;
     }
 }
