@@ -42,10 +42,9 @@ import static com.flipkart.dus.internals.DatabaseHelper.TABLE_COMPONENTS;
 
 public class DUSContentProvider extends ContentProvider {
 
-    private static UriMatcher sUriMatcher;
-
     @NonNull
     private static final String TAG = "DUSCONTENTPROVIDER";
+    private static UriMatcher sUriMatcher;
     @NonNull
     private final ConcurrentHashMap<String, ScreenInfo> mCachedScreenInfo = new ConcurrentHashMap<>();
     @NonNull
@@ -165,7 +164,6 @@ public class DUSContentProvider extends ContentProvider {
             case DUSContracts.JS_COMPONENTS:
                 SQLiteDatabase database = getDatabaseHelper().getReadableDatabase();
                 cursor = database.rawQuery("SELECT * FROM " + TABLE_COMPONENTS + selection, null);
-//                cursor = database.query(TABLE_COMPONENTS, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case DUSContracts.UPDATE_GRAPH:
                 boolean shouldRetryFetchingUG = DUSContracts.TRUE.equalsIgnoreCase(uri.getQueryParameter(DUSContracts.QUERY_SHOULD_RETRY)) || refreshUpdateGraph.get();
@@ -347,27 +345,8 @@ public class DUSContentProvider extends ContentProvider {
         }
     }
 
-    private static class ScreenInfo {
-        @NonNull
-        int status;
-        @NonNull
-        String filePath;
-    }
-
     private DusLogger getLoggerInstance() {
         return DusDependencyResolver.getDUSDependencyResolver(getContext()).getDusLogger();
-    }
-
-    private static class BatchUriSet {
-        Set<Uri> uriToNotify;
-
-        BatchUriSet(int capacity) {
-            this.uriToNotify = new HashSet<>(capacity);
-        }
-
-        public BatchUriSet() {
-            this.uriToNotify = new HashSet<>();
-        }
     }
 
     @Override
@@ -383,5 +362,24 @@ public class DUSContentProvider extends ContentProvider {
         sUriMatcher.addURI(DUSContracts.CONTENT_AUTHORITY, DUSContracts.PATH_UPDATEGRAPH, DUSContracts.UPDATE_GRAPH);
         sUriMatcher.addURI(DUSContracts.CONTENT_AUTHORITY, DUSContracts.PATH_CLEAR, DUSContracts.CLEAR);
         super.attachInfo(context, info);
+    }
+
+    private static class ScreenInfo {
+        @NonNull
+        int status;
+        @NonNull
+        String filePath;
+    }
+
+    private static class BatchUriSet {
+        Set<Uri> uriToNotify;
+
+        BatchUriSet(int capacity) {
+            this.uriToNotify = new HashSet<>(capacity);
+        }
+
+        public BatchUriSet() {
+            this.uriToNotify = new HashSet<>();
+        }
     }
 }
